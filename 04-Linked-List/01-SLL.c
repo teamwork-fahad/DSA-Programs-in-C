@@ -69,7 +69,10 @@ int main()
                     insert_end();
                     break;
 
-
+                case 3:
+                    insert_pos();
+                    break;
+                    
                 case 0:
                     printf("\n Back to main menu");
                     break;

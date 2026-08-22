@@ -338,7 +338,7 @@ int main()
                 choice = 15;
                 printf("Program is closing.\n");
             }
-        }
+`        }
     } while (choice != 15);
 
     return 0;
