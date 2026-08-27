@@ -1,4 +1,4 @@
-#include<stdio.h>
+#include <stdio.h>
 
 #define MAX 5
 
@@ -6,7 +6,7 @@ int QUEUE[MAX];
 int FRONT = -1;
 int REAR = -1;
 
-// Enqueue Function
+// Circular Enqueue
 void enqueue()
 {
     int ITEM;
@@ -14,29 +14,33 @@ void enqueue()
     printf("Enter value to insert: ");
     scanf("%d", &ITEM);
 
-    // Step 1: Check if queue is full
-    if (REAR == MAX - 1)
+    // Step 1: Check for Overflow
+    if ((REAR + 1) % MAX == FRONT)
     {
-        printf("Queue Overflow\n");
+        printf("QUEUE OVERFLOW\n");
         return;
     }
 
-    // Step 2: Move REAR one step forward
-    REAR = REAR + 1;
-
-    // Step 3: Insert item at REAR
-    QUEUE[REAR] = ITEM;
-
-    // Step 4: If first element is inserted
+    // Step 2: Update Pointers
     if (FRONT == -1)
     {
+        // Queue was empty
         FRONT = 0;
+        REAR = 0;
     }
+    else
+    {
+        // Circular move
+        REAR = (REAR + 1) % MAX;
+    }
+
+    // Step 3: Insert Item
+    QUEUE[REAR] = ITEM;
 
     printf("%d inserted into queue.\n", ITEM);
 }
 
-// Dequeue Function
+// Circular Dequeue
 void dequeue()
 {
     int ITEM;
@@ -44,17 +48,17 @@ void dequeue()
     // Step 1: Check if queue is empty
     if (FRONT == -1)
     {
-        printf("Queue Underflow\n");
+        printf("QUEUE UNDERFLOW\n");
         return;
     }
 
     // Step 2: Store front element
     ITEM = QUEUE[FRONT];
 
-    // Step 3: Check number of elements
+    // Step 3: Update pointers
     if (FRONT == REAR)
     {
-        // Case 1: Only one element
+        // Only one element
         FRONT = -1;
         REAR = -1;
 
@@ -62,32 +66,42 @@ void dequeue()
     }
     else
     {
-        // Case 2: More than one element
-        FRONT = FRONT + 1;
+        // Circular move
+        FRONT = (FRONT + 1) % MAX;
     }
 
     // Step 4: Return ITEM
     printf("%d deleted from queue.\n", ITEM);
 }
 
-// Display Function
+// Display
 void display()
 {
-    int i;
+    int I;
 
-    // Check if queue is empty
+    // Step 1: Check if queue is empty
     if (FRONT == -1)
     {
-        printf("Queue is Empty\n");
+        printf("QUEUE IS EMPTY\n");
         return;
     }
 
     printf("Queue elements: ");
 
-    for (i = FRONT; i <= REAR; i++)
+    // Step 2: Set I = FRONT
+    I = FRONT;
+
+    // Step 3: Print until REAR
+    while (I != REAR)
     {
-        printf("%d ", QUEUE[i]);
+        printf("%d ", QUEUE[I]);
+
+        // Circular move
+        I = (I + 1) % MAX;
     }
+
+    // Step 4: Print last element
+    printf("%d", QUEUE[REAR]);
 
     printf("\n");
 }
@@ -99,7 +113,7 @@ int main()
 
     do
     {
-        printf("\n===== QUEUE MENU =====\n");
+        printf("\n===== CIRCULAR QUEUE MENU =====\n");
         printf("1. Enqueue\n");
         printf("2. Dequeue\n");
         printf("3. Display\n");
